@@ -3,7 +3,8 @@ import 'package:flutter/services.dart';
 
 class AutoAnnotatedRegionWidget extends StatelessWidget {
   final Widget child;
-  const AutoAnnotatedRegionWidget({super.key, required this.child});
+  final Brightness? brightness;
+  const AutoAnnotatedRegionWidget({super.key, required this.child, this.brightness});
 
   @override
   Widget build(BuildContext context) {
@@ -11,8 +12,9 @@ class AutoAnnotatedRegionWidget extends StatelessWidget {
       value: SystemUiOverlayStyle(
         systemNavigationBarColor: Colors.transparent,
         statusBarColor: Colors.transparent,
-        statusBarIconBrightness:
-            MediaQuery.of(context).platformBrightness == Brightness.dark ? Brightness.light : Brightness.dark,
+        statusBarIconBrightness: brightness ?? (MediaQuery.of(context).platformBrightness == Brightness.dark
+                ? Brightness.light
+                : Brightness.dark),
       ),
       child: child,
     );

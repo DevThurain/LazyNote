@@ -9,20 +9,22 @@ class AppThemes {
 
   static ThemeData light() {
     return ThemeData.light().copyWith(
-        scaffoldBackgroundColor: AppColors.whiteBase,
-        colorScheme: const ColorScheme.light().copyWith(
-          primary: AppColors.violet,
-          surface: AppColors.white,
-          tertiary: AppColors.greyMutedVarient,
-        ));
+      scaffoldBackgroundColor: AppColors.lightViolet,
+      colorScheme: const ColorScheme.light().copyWith(
+        primary: AppColors.violet,
+        surface: AppColors.white,
+        tertiary: AppColors.greyMutedVarient,
+      ),
+    );
   }
 
   static ThemeData dark() {
     return ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: AppColors.blackBase,
-        colorScheme: const ColorScheme.dark().copyWith(
-          surface: AppColors.blackMuted,
-          tertiary: AppColors.greyMuted,
-        ));
+      scaffoldBackgroundColor: AppColors.blackBase,
+      colorScheme: const ColorScheme.dark().copyWith(
+        surface: AppColors.blackMuted,
+        tertiary: AppColors.greyMuted,
+      ),
+    );
   }
 }

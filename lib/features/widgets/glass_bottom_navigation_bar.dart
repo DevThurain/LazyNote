@@ -21,7 +21,7 @@ class GlassBottomNavigationBar extends StatelessWidget {
             elevation:
                 0, // transparent, you could use 0x44aaaaff to make it slightly less transparent with a blue hue.
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppValues.p_16),
+              padding: const EdgeInsets.symmetric(horizontal: AppValues.p_28),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
