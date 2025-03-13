@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:drift/drift.dart';
-import 'package:lazy_note/domain/sub_note_entity.dart';
+import 'package:lazy_note/domain/entities/sub_note_entity.dart';
 
 class SubNoteEntityListConverter
     extends TypeConverter<List<SubNoteEntity>, String> {

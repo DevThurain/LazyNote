@@ -1,7 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:lazy_note/data/persistent/app_database.dart';
 import 'package:lazy_note/data/persistent/tables/note_table.dart';
-import 'package:lazy_note/domain/note_entity.dart';
+import 'package:lazy_note/domain/entities/note_entity.dart';
 
 class NoteDao {
   final AppDatabase database;

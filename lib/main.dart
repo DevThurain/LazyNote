@@ -4,10 +4,7 @@ import 'package:lazy_note/core/services/initial_service.dart';
 import 'package:lazy_note/lazy_note_app.dart';
 
 void main() async {
-  runApp(
-    UncontrolledProviderScope(
-      container: await initialService(),
-      child: const LazyNoteApp(),
-    ),
-  );
+  final container = await initialService();
+
+  runApp(UncontrolledProviderScope(container: container, child: LazyNoteApp()));
 }

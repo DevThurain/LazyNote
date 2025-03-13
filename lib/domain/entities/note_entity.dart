@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:lazy_note/domain/sub_note_entity.dart';
+import 'package:lazy_note/domain/entities/sub_note_entity.dart';
 
 part 'note_entity.freezed.dart';
 part 'note_entity.g.dart';
