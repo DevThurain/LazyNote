@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:drift/drift.dart';
 import 'package:lazy_note/domain/sub_note_entity.dart';
 
-class SubNoteEntityListConverter extends TypeConverter<List<SubNoteEntity>, String> {
+class SubNoteEntityListConverter
+    extends TypeConverter<List<SubNoteEntity>, String> {
   const SubNoteEntityListConverter();
 
   @override
@@ -11,10 +12,13 @@ class SubNoteEntityListConverter extends TypeConverter<List<SubNoteEntity>, Stri
     if (fromDb.isEmpty) {
       return [];
     }
-    return List<SubNoteEntity>.from(jsonDecode(fromDb));  }
+    return (jsonDecode(fromDb) as List)
+        .map((e) => SubNoteEntity.fromJson(e))
+        .toList();
+  }
 
   @override
   String toSql(List<SubNoteEntity> value) {
-    return jsonEncode(value); 
+    return jsonEncode(value.map((e) => e.toJson()).toList());
   }
 }
