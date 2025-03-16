@@ -36,12 +36,23 @@ class NoteListScreen extends ConsumerWidget {
             return SliverList(
               delegate: SliverChildBuilderDelegate(
                 (context, index) => CheckboxListTile(
-                  title: Text(rNoteList[index].title),
+                  title: Text(
+                    rNoteList[index].title,
+                    style: TextStyle(
+                      decoration:
+                          rNoteList[index].isCompleted
+                              ? TextDecoration.lineThrough
+                              : TextDecoration.none,
+                    ),
+                  ),
                   value: rNoteList[index].isCompleted,
                   onChanged: (isChecked) async {
                     await ref
                         .read(noteDaoProvider)
-                        .updateCheckStatus(rNoteList[index], isChecked ?? false);
+                        .updateCheckStatus(
+                          rNoteList[index],
+                          isChecked ?? false,
+                        );
                   },
                 ),
                 childCount: rNoteList.length,
