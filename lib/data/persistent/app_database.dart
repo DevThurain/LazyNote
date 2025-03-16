@@ -7,7 +7,7 @@ import 'package:lazy_note/domain/entities/sub_note_entity.dart';
 part 'app_database.g.dart';
 
 @DriftDatabase(tables: [NoteTable])
-abstract class AppDatabase extends _$AppDatabase {
+class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor]) : super(executor ?? _openConnection());
 
   @override
