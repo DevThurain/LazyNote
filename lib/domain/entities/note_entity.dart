@@ -11,6 +11,7 @@ abstract class NoteEntity with _$NoteEntity {
     @Default("") String title,
     @Default("") String note,
     @Default([]) List<SubNoteEntity> subNotes,
+    @Default(false) bool isCompleted,
     DateTime? createdAt,
   }) = _NoteEntity;
 

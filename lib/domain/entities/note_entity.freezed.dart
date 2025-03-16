@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$NoteEntity {
 
- int get id; String get title; String get note; List<SubNoteEntity> get subNotes; DateTime? get createdAt;
+ int get id; String get title; String get note; List<SubNoteEntity> get subNotes; bool get isCompleted; DateTime? get createdAt;
 /// Create a copy of NoteEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +29,16 @@ $NoteEntityCopyWith<NoteEntity> get copyWith => _$NoteEntityCopyWithImpl<NoteEnt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is NoteEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.note, note) || other.note == note)&&const DeepCollectionEquality().equals(other.subNotes, subNotes)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is NoteEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.note, note) || other.note == note)&&const DeepCollectionEquality().equals(other.subNotes, subNotes)&&(identical(other.isCompleted, isCompleted) || other.isCompleted == isCompleted)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,title,note,const DeepCollectionEquality().hash(subNotes),createdAt);
+int get hashCode => Object.hash(runtimeType,id,title,note,const DeepCollectionEquality().hash(subNotes),isCompleted,createdAt);
 
 @override
 String toString() {
-  return 'NoteEntity(id: $id, title: $title, note: $note, subNotes: $subNotes, createdAt: $createdAt)';
+  return 'NoteEntity(id: $id, title: $title, note: $note, subNotes: $subNotes, isCompleted: $isCompleted, createdAt: $createdAt)';
 }
 
 
@@ -49,7 +49,7 @@ abstract mixin class $NoteEntityCopyWith<$Res>  {
   factory $NoteEntityCopyWith(NoteEntity value, $Res Function(NoteEntity) _then) = _$NoteEntityCopyWithImpl;
 @useResult
 $Res call({
- int id, String title, String note, List<SubNoteEntity> subNotes, DateTime? createdAt
+ int id, String title, String note, List<SubNoteEntity> subNotes, bool isCompleted, DateTime? createdAt
 });
 
 
@@ -66,13 +66,14 @@ class _$NoteEntityCopyWithImpl<$Res>
 
 /// Create a copy of NoteEntity
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? note = null,Object? subNotes = null,Object? createdAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? note = null,Object? subNotes = null,Object? isCompleted = null,Object? createdAt = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,note: null == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
 as String,subNotes: null == subNotes ? _self.subNotes : subNotes // ignore: cast_nullable_to_non_nullable
-as List<SubNoteEntity>,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as List<SubNoteEntity>,isCompleted: null == isCompleted ? _self.isCompleted : isCompleted // ignore: cast_nullable_to_non_nullable
+as bool,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,
   ));
 }
@@ -84,7 +85,7 @@ as DateTime?,
 @JsonSerializable()
 
 class _NoteEntity implements NoteEntity {
-   _NoteEntity({required this.id, this.title = "", this.note = "", final  List<SubNoteEntity> subNotes = const [], this.createdAt}): _subNotes = subNotes;
+   _NoteEntity({required this.id, this.title = "", this.note = "", final  List<SubNoteEntity> subNotes = const [], this.isCompleted = false, this.createdAt}): _subNotes = subNotes;
   factory _NoteEntity.fromJson(Map<String, dynamic> json) => _$NoteEntityFromJson(json);
 
 @override final  int id;
@@ -97,6 +98,7 @@ class _NoteEntity implements NoteEntity {
   return EqualUnmodifiableListView(_subNotes);
 }
 
+@override@JsonKey() final  bool isCompleted;
 @override final  DateTime? createdAt;
 
 /// Create a copy of NoteEntity
@@ -112,16 +114,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NoteEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.note, note) || other.note == note)&&const DeepCollectionEquality().equals(other._subNotes, _subNotes)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NoteEntity&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.note, note) || other.note == note)&&const DeepCollectionEquality().equals(other._subNotes, _subNotes)&&(identical(other.isCompleted, isCompleted) || other.isCompleted == isCompleted)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,title,note,const DeepCollectionEquality().hash(_subNotes),createdAt);
+int get hashCode => Object.hash(runtimeType,id,title,note,const DeepCollectionEquality().hash(_subNotes),isCompleted,createdAt);
 
 @override
 String toString() {
-  return 'NoteEntity(id: $id, title: $title, note: $note, subNotes: $subNotes, createdAt: $createdAt)';
+  return 'NoteEntity(id: $id, title: $title, note: $note, subNotes: $subNotes, isCompleted: $isCompleted, createdAt: $createdAt)';
 }
 
 
@@ -132,7 +134,7 @@ abstract mixin class _$NoteEntityCopyWith<$Res> implements $NoteEntityCopyWith<$
   factory _$NoteEntityCopyWith(_NoteEntity value, $Res Function(_NoteEntity) _then) = __$NoteEntityCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String title, String note, List<SubNoteEntity> subNotes, DateTime? createdAt
+ int id, String title, String note, List<SubNoteEntity> subNotes, bool isCompleted, DateTime? createdAt
 });
 
 
@@ -149,13 +151,14 @@ class __$NoteEntityCopyWithImpl<$Res>
 
 /// Create a copy of NoteEntity
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? note = null,Object? subNotes = null,Object? createdAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? note = null,Object? subNotes = null,Object? isCompleted = null,Object? createdAt = freezed,}) {
   return _then(_NoteEntity(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,note: null == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
 as String,subNotes: null == subNotes ? _self._subNotes : subNotes // ignore: cast_nullable_to_non_nullable
-as List<SubNoteEntity>,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as List<SubNoteEntity>,isCompleted: null == isCompleted ? _self.isCompleted : isCompleted // ignore: cast_nullable_to_non_nullable
+as bool,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,
   ));
 }

@@ -9,6 +9,7 @@ class NoteTable extends Table {
   TextColumn get note => text().named('note')();
   TextColumn get subNotes =>
       text().named('sub_notes').map(SubNoteEntityListConverter())();
+  BoolColumn get isCompleted => boolean()();
   DateTimeColumn get createdAt => dateTime().named('created_at').nullable()();
 }
 

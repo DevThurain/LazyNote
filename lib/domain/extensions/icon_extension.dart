@@ -7,4 +7,10 @@ extension IconExtension on BuildContext {
         ? AppColors.white
         : AppColors.black;
   }
+
+  Color dynamicPrimayIconColor() {
+    return MediaQuery.of(this).platformBrightness == Brightness.dark
+        ? AppColors.white
+        : AppColors.violet;
+  }
 }

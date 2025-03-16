@@ -15,6 +15,7 @@ _NoteEntity _$NoteEntityFromJson(Map<String, dynamic> json) => _NoteEntity(
           ?.map((e) => SubNoteEntity.fromJson(e as Map<String, dynamic>))
           .toList() ??
       const [],
+  isCompleted: json['isCompleted'] as bool? ?? false,
   createdAt:
       json['createdAt'] == null
           ? null
@@ -27,5 +28,6 @@ Map<String, dynamic> _$NoteEntityToJson(_NoteEntity instance) =>
       'title': instance.title,
       'note': instance.note,
       'subNotes': instance.subNotes,
+      'isCompleted': instance.isCompleted,
       'createdAt': instance.createdAt?.toIso8601String(),
     };

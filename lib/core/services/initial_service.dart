@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 Future<ProviderContainer> initialService() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  widgetsBinding;
 
   final container = ProviderContainer();
 

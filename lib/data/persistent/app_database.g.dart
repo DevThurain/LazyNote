@@ -49,6 +49,20 @@ class $NoteTableTable extends NoteTable
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   ).withConverter<List<SubNoteEntity>>($NoteTableTable.$convertersubNotes);
+  static const VerificationMeta _isCompletedMeta = const VerificationMeta(
+    'isCompleted',
+  );
+  @override
+  late final GeneratedColumn<bool> isCompleted = GeneratedColumn<bool>(
+    'is_completed',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_completed" IN (0, 1))',
+    ),
+  );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
   );
@@ -61,7 +75,14 @@ class $NoteTableTable extends NoteTable
     requiredDuringInsert: false,
   );
   @override
-  List<GeneratedColumn> get $columns => [id, title, note, subNotes, createdAt];
+  List<GeneratedColumn> get $columns => [
+    id,
+    title,
+    note,
+    subNotes,
+    isCompleted,
+    createdAt,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -92,6 +113,17 @@ class $NoteTableTable extends NoteTable
       );
     } else if (isInserting) {
       context.missing(_noteMeta);
+    }
+    if (data.containsKey('is_completed')) {
+      context.handle(
+        _isCompletedMeta,
+        isCompleted.isAcceptableOrUnknown(
+          data['is_completed']!,
+          _isCompletedMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_isCompletedMeta);
     }
     if (data.containsKey('created_at')) {
       context.handle(
@@ -129,6 +161,11 @@ class $NoteTableTable extends NoteTable
           data['${effectivePrefix}sub_notes'],
         )!,
       ),
+      isCompleted:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.bool,
+            data['${effectivePrefix}is_completed'],
+          )!,
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}created_at'],
@@ -150,12 +187,14 @@ class NoteTableData extends DataClass implements Insertable<NoteTableData> {
   final String title;
   final String note;
   final List<SubNoteEntity> subNotes;
+  final bool isCompleted;
   final DateTime? createdAt;
   const NoteTableData({
     required this.id,
     required this.title,
     required this.note,
     required this.subNotes,
+    required this.isCompleted,
     this.createdAt,
   });
   @override
@@ -169,6 +208,7 @@ class NoteTableData extends DataClass implements Insertable<NoteTableData> {
         $NoteTableTable.$convertersubNotes.toSql(subNotes),
       );
     }
+    map['is_completed'] = Variable<bool>(isCompleted);
     if (!nullToAbsent || createdAt != null) {
       map['created_at'] = Variable<DateTime>(createdAt);
     }
@@ -181,6 +221,7 @@ class NoteTableData extends DataClass implements Insertable<NoteTableData> {
       title: Value(title),
       note: Value(note),
       subNotes: Value(subNotes),
+      isCompleted: Value(isCompleted),
       createdAt:
           createdAt == null && nullToAbsent
               ? const Value.absent()
@@ -198,6 +239,7 @@ class NoteTableData extends DataClass implements Insertable<NoteTableData> {
       title: serializer.fromJson<String>(json['title']),
       note: serializer.fromJson<String>(json['note']),
       subNotes: serializer.fromJson<List<SubNoteEntity>>(json['subNotes']),
+      isCompleted: serializer.fromJson<bool>(json['isCompleted']),
       createdAt: serializer.fromJson<DateTime?>(json['createdAt']),
     );
   }
@@ -209,6 +251,7 @@ class NoteTableData extends DataClass implements Insertable<NoteTableData> {
       'title': serializer.toJson<String>(title),
       'note': serializer.toJson<String>(note),
       'subNotes': serializer.toJson<List<SubNoteEntity>>(subNotes),
+      'isCompleted': serializer.toJson<bool>(isCompleted),
       'createdAt': serializer.toJson<DateTime?>(createdAt),
     };
   }
@@ -218,12 +261,14 @@ class NoteTableData extends DataClass implements Insertable<NoteTableData> {
     String? title,
     String? note,
     List<SubNoteEntity>? subNotes,
+    bool? isCompleted,
     Value<DateTime?> createdAt = const Value.absent(),
   }) => NoteTableData(
     id: id ?? this.id,
     title: title ?? this.title,
     note: note ?? this.note,
     subNotes: subNotes ?? this.subNotes,
+    isCompleted: isCompleted ?? this.isCompleted,
     createdAt: createdAt.present ? createdAt.value : this.createdAt,
   );
   NoteTableData copyWithCompanion(NoteTableCompanion data) {
@@ -232,6 +277,8 @@ class NoteTableData extends DataClass implements Insertable<NoteTableData> {
       title: data.title.present ? data.title.value : this.title,
       note: data.note.present ? data.note.value : this.note,
       subNotes: data.subNotes.present ? data.subNotes.value : this.subNotes,
+      isCompleted:
+          data.isCompleted.present ? data.isCompleted.value : this.isCompleted,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
     );
   }
@@ -243,13 +290,15 @@ class NoteTableData extends DataClass implements Insertable<NoteTableData> {
           ..write('title: $title, ')
           ..write('note: $note, ')
           ..write('subNotes: $subNotes, ')
+          ..write('isCompleted: $isCompleted, ')
           ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, title, note, subNotes, createdAt);
+  int get hashCode =>
+      Object.hash(id, title, note, subNotes, isCompleted, createdAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -258,6 +307,7 @@ class NoteTableData extends DataClass implements Insertable<NoteTableData> {
           other.title == this.title &&
           other.note == this.note &&
           other.subNotes == this.subNotes &&
+          other.isCompleted == this.isCompleted &&
           other.createdAt == this.createdAt);
 }
 
@@ -266,12 +316,14 @@ class NoteTableCompanion extends UpdateCompanion<NoteTableData> {
   final Value<String> title;
   final Value<String> note;
   final Value<List<SubNoteEntity>> subNotes;
+  final Value<bool> isCompleted;
   final Value<DateTime?> createdAt;
   const NoteTableCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
     this.note = const Value.absent(),
     this.subNotes = const Value.absent(),
+    this.isCompleted = const Value.absent(),
     this.createdAt = const Value.absent(),
   });
   NoteTableCompanion.insert({
@@ -279,15 +331,18 @@ class NoteTableCompanion extends UpdateCompanion<NoteTableData> {
     required String title,
     required String note,
     required List<SubNoteEntity> subNotes,
+    required bool isCompleted,
     this.createdAt = const Value.absent(),
   }) : title = Value(title),
        note = Value(note),
-       subNotes = Value(subNotes);
+       subNotes = Value(subNotes),
+       isCompleted = Value(isCompleted);
   static Insertable<NoteTableData> custom({
     Expression<int>? id,
     Expression<String>? title,
     Expression<String>? note,
     Expression<String>? subNotes,
+    Expression<bool>? isCompleted,
     Expression<DateTime>? createdAt,
   }) {
     return RawValuesInsertable({
@@ -295,6 +350,7 @@ class NoteTableCompanion extends UpdateCompanion<NoteTableData> {
       if (title != null) 'title': title,
       if (note != null) 'note': note,
       if (subNotes != null) 'sub_notes': subNotes,
+      if (isCompleted != null) 'is_completed': isCompleted,
       if (createdAt != null) 'created_at': createdAt,
     });
   }
@@ -304,6 +360,7 @@ class NoteTableCompanion extends UpdateCompanion<NoteTableData> {
     Value<String>? title,
     Value<String>? note,
     Value<List<SubNoteEntity>>? subNotes,
+    Value<bool>? isCompleted,
     Value<DateTime?>? createdAt,
   }) {
     return NoteTableCompanion(
@@ -311,6 +368,7 @@ class NoteTableCompanion extends UpdateCompanion<NoteTableData> {
       title: title ?? this.title,
       note: note ?? this.note,
       subNotes: subNotes ?? this.subNotes,
+      isCompleted: isCompleted ?? this.isCompleted,
       createdAt: createdAt ?? this.createdAt,
     );
   }
@@ -332,6 +390,9 @@ class NoteTableCompanion extends UpdateCompanion<NoteTableData> {
         $NoteTableTable.$convertersubNotes.toSql(subNotes.value),
       );
     }
+    if (isCompleted.present) {
+      map['is_completed'] = Variable<bool>(isCompleted.value);
+    }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
     }
@@ -345,6 +406,7 @@ class NoteTableCompanion extends UpdateCompanion<NoteTableData> {
           ..write('title: $title, ')
           ..write('note: $note, ')
           ..write('subNotes: $subNotes, ')
+          ..write('isCompleted: $isCompleted, ')
           ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
@@ -368,6 +430,7 @@ typedef $$NoteTableTableCreateCompanionBuilder =
       required String title,
       required String note,
       required List<SubNoteEntity> subNotes,
+      required bool isCompleted,
       Value<DateTime?> createdAt,
     });
 typedef $$NoteTableTableUpdateCompanionBuilder =
@@ -376,6 +439,7 @@ typedef $$NoteTableTableUpdateCompanionBuilder =
       Value<String> title,
       Value<String> note,
       Value<List<SubNoteEntity>> subNotes,
+      Value<bool> isCompleted,
       Value<DateTime?> createdAt,
     });
 
@@ -413,6 +477,11 @@ class $$NoteTableTableFilterComposer
     builder: (column) => ColumnWithTypeConverterFilters(column),
   );
 
+  ColumnFilters<bool> get isCompleted => $composableBuilder(
+    column: $table.isCompleted,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<DateTime> get createdAt => $composableBuilder(
     column: $table.createdAt,
     builder: (column) => ColumnFilters(column),
@@ -448,6 +517,11 @@ class $$NoteTableTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<bool> get isCompleted => $composableBuilder(
+    column: $table.isCompleted,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get createdAt => $composableBuilder(
     column: $table.createdAt,
     builder: (column) => ColumnOrderings(column),
@@ -474,6 +548,11 @@ class $$NoteTableTableAnnotationComposer
 
   GeneratedColumnWithTypeConverter<List<SubNoteEntity>, String> get subNotes =>
       $composableBuilder(column: $table.subNotes, builder: (column) => column);
+
+  GeneratedColumn<bool> get isCompleted => $composableBuilder(
+    column: $table.isCompleted,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<DateTime> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
@@ -514,12 +593,14 @@ class $$NoteTableTableTableManager
                 Value<String> title = const Value.absent(),
                 Value<String> note = const Value.absent(),
                 Value<List<SubNoteEntity>> subNotes = const Value.absent(),
+                Value<bool> isCompleted = const Value.absent(),
                 Value<DateTime?> createdAt = const Value.absent(),
               }) => NoteTableCompanion(
                 id: id,
                 title: title,
                 note: note,
                 subNotes: subNotes,
+                isCompleted: isCompleted,
                 createdAt: createdAt,
               ),
           createCompanionCallback:
@@ -528,12 +609,14 @@ class $$NoteTableTableTableManager
                 required String title,
                 required String note,
                 required List<SubNoteEntity> subNotes,
+                required bool isCompleted,
                 Value<DateTime?> createdAt = const Value.absent(),
               }) => NoteTableCompanion.insert(
                 id: id,
                 title: title,
                 note: note,
                 subNotes: subNotes,
+                isCompleted: isCompleted,
                 createdAt: createdAt,
               ),
           withReferenceMapper:

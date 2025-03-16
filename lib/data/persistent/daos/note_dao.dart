@@ -15,6 +15,7 @@ class NoteDao {
             title: noteEntity.title,
             note: noteEntity.note,
             createdAt: Value(DateTime.now()),
+            isCompleted: noteEntity.isCompleted,
             subNotes: noteEntity.subNotes,
           ),
         );

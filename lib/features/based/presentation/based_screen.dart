@@ -16,7 +16,11 @@ class BasedScreen extends HookConsumerWidget {
       brightness: Brightness.light,
       child: Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: AddNoteWidget(onTap: () {}),
+        floatingActionButton: AddNoteWidget(
+          onTap: () {
+            navigateToAddNoteScreen(context);
+          },
+        ),
         bottomNavigationBar: GlassBottomNavigationBar(
           onTap: (index) {
             _onItemTapped(index, context);
@@ -39,7 +43,7 @@ class BasedScreen extends HookConsumerWidget {
     return 0;
   }
 
-  _onItemTapped(int index, BuildContext context) {
+  void _onItemTapped(int index, BuildContext context) {
     switch (index) {
       case 0:
         GoRouter.of(context).go(AppRoutes.note_list_screen);
@@ -48,5 +52,9 @@ class BasedScreen extends HookConsumerWidget {
       default:
         GoRouter.of(context).go(AppRoutes.note_list_screen);
     }
+  }
+
+  void navigateToAddNoteScreen(BuildContext context) {
+    GoRouter.of(context).push(AppRoutes.add_note_screen);
   }
 }
