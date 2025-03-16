@@ -19,6 +19,7 @@ dependencies:
 
   # ui
   flutter_svg: ^2.0.17
+  loading_animation_widget: ^1.3.0
 
   # db
   drift: ^2.26.0

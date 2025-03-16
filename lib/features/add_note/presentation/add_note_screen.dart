@@ -17,6 +17,7 @@ class AddNoteScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final titleController = useTextEditingController();
     final noteController = useTextEditingController();
+    final isLoading = ref.watch(addNoteNotifierProvider).isLoading;
 
     ref.listen(addNoteNotifierProvider, (prev, next) {
       next.whenData((option) {
@@ -79,6 +80,7 @@ class AddNoteScreen extends HookConsumerWidget {
                 child: ColorButton(
                   text: 'Save',
                   color: AppColors.violet,
+                  isLoading: isLoading,
                   onTap: () {
                     ref
                         .read(addNoteNotifierProvider.notifier)

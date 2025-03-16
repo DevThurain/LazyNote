@@ -15,8 +15,10 @@ class AddNoteNotifier extends _$AddNoteNotifier {
   }
 
   addNote(String title, String note) async {
+    state = AsyncLoading();
     final noteDao = ref.read(noteDaoProvider);
     await noteDao.addNote(NoteEntity(id: 0, title: title, note: note));
+    await Future.delayed(Duration(seconds: 1));
     state = AsyncData(Some(true));
   }
 }

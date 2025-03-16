@@ -9,7 +9,7 @@ class NoteTable extends Table {
   TextColumn get note => text().named('note')();
   TextColumn get subNotes =>
       text().named('sub_notes').map(SubNoteEntityListConverter())();
-  BoolColumn get isCompleted => boolean()();
+  BoolColumn get isCompleted => boolean().withDefault(Constant(false))();
   DateTimeColumn get createdAt => dateTime().named('created_at').nullable()();
 }
 
@@ -21,6 +21,7 @@ extension NoteTableDataExtension on NoteTableData {
       note: note,
       subNotes: subNotes,
       createdAt: createdAt,
+      isCompleted: isCompleted,
     );
   }
 }

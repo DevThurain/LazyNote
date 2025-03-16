@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:lazy_note/data/persistent/app_database.dart';
 import 'package:lazy_note/domain/entities/sub_note_entity.dart';
 
 part 'note_entity.freezed.dart';
@@ -17,4 +18,17 @@ abstract class NoteEntity with _$NoteEntity {
 
   factory NoteEntity.fromJson(Map<String, dynamic> json) =>
       _$NoteEntityFromJson(json);
+}
+
+extension NoteTableDataExtension on NoteEntity {
+  NoteTableData toNoteTableData() {
+    return NoteTableData(
+      id: id,
+      title: title,
+      note: note,
+      subNotes: subNotes,
+      createdAt: createdAt,
+      isCompleted: isCompleted,
+    );
+  }
 }

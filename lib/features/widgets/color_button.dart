@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lazy_note/core/constants/app_values.dart';
 import 'package:lazy_note/core/themes/app_colors.dart';
 import 'package:lazy_note/core/themes/decorations/text_styles.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class ColorButton extends StatelessWidget {
   const ColorButton({
@@ -10,17 +11,19 @@ class ColorButton extends StatelessWidget {
     required this.color,
     required this.onTap,
     this.darkText = false,
+    this.isLoading = false,
   });
 
   final String text;
   final Color color;
   final VoidCallback onTap;
   final bool darkText;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: isLoading ? () {} : onTap,
       child: Container(
         width: double.infinity,
         height: AppValues.p_56,
@@ -29,12 +32,18 @@ class ColorButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppValues.p_10),
         ),
         child: Center(
-          child: Text(
-            text,
-            style: TextStyles.inter16().copyWith(
-              color: darkText ? AppColors.black : AppColors.white,
-            ),
-          ),
+          child:
+              isLoading
+                  ? LoadingAnimationWidget.stretchedDots(
+                    color: Colors.white,
+                    size: AppValues.p_24,
+                  )
+                  : Text(
+                    text,
+                    style: TextStyles.inter16().copyWith(
+                      color: darkText ? AppColors.black : AppColors.white,
+                    ),
+                  ),
         ),
       ),
     );

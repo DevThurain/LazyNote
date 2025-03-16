@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lazy_note/core/constants/app_values.dart';
 import 'package:lazy_note/core/themes/app_colors.dart';
 import 'package:lazy_note/core/themes/decorations/text_styles.dart';
+import 'package:lazy_note/data/persistent/providers/note_dao_provider.dart';
 import 'package:lazy_note/domain/entities/note_entity.dart';
 import 'package:lazy_note/features/note_list/presentation/providers/note_list_provider.dart';
 
@@ -11,6 +12,7 @@ class NoteListScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var noteList = ref.watch(noteListProvider);
+    var reactiveNoteList = ref.watch(reactiveNoteListProvider);
 
     return CustomScrollView(
       slivers: [
@@ -27,23 +29,31 @@ class NoteListScreen extends ConsumerWidget {
             ),
           ),
         ),
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) => CheckboxListTile(
-              title: Text(noteList[index].title),
-              value: noteList[index].isCompleted,
-              onChanged: (value) {
-                ref.read(noteListProvider.notifier).update((state) {
-                  final updatedList = List<NoteEntity>.from(state);
-                  updatedList[index] = updatedList[index].copyWith(
-                    isCompleted: value ?? false,
-                  );
-                  return updatedList; // Update state with modified list
-                });
-              },
-            ),
-            childCount: noteList.length,
-          ),
+
+        reactiveNoteList.when(
+          data: (rNoteList) {
+            debugPrint(rNoteList.toString());
+            return SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) => CheckboxListTile(
+                  title: Text(rNoteList[index].title),
+                  value: rNoteList[index].isCompleted,
+                  onChanged: (isChecked) async {
+                    await ref
+                        .read(noteDaoProvider)
+                        .updateCheckStatus(rNoteList[index], isChecked ?? false);
+                  },
+                ),
+                childCount: rNoteList.length,
+              ),
+            );
+          },
+          error: (e, t) {
+            return SliverToBoxAdapter(child: SizedBox());
+          },
+          loading: () {
+            return SliverToBoxAdapter(child: SizedBox());
+          },
         ),
       ],
     );

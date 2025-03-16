@@ -58,10 +58,11 @@ class $NoteTableTable extends NoteTable
     aliasedName,
     false,
     type: DriftSqlType.bool,
-    requiredDuringInsert: true,
+    requiredDuringInsert: false,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
       'CHECK ("is_completed" IN (0, 1))',
     ),
+    defaultValue: Constant(false),
   );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
@@ -122,8 +123,6 @@ class $NoteTableTable extends NoteTable
           _isCompletedMeta,
         ),
       );
-    } else if (isInserting) {
-      context.missing(_isCompletedMeta);
     }
     if (data.containsKey('created_at')) {
       context.handle(
@@ -331,12 +330,11 @@ class NoteTableCompanion extends UpdateCompanion<NoteTableData> {
     required String title,
     required String note,
     required List<SubNoteEntity> subNotes,
-    required bool isCompleted,
+    this.isCompleted = const Value.absent(),
     this.createdAt = const Value.absent(),
   }) : title = Value(title),
        note = Value(note),
-       subNotes = Value(subNotes),
-       isCompleted = Value(isCompleted);
+       subNotes = Value(subNotes);
   static Insertable<NoteTableData> custom({
     Expression<int>? id,
     Expression<String>? title,
@@ -430,7 +428,7 @@ typedef $$NoteTableTableCreateCompanionBuilder =
       required String title,
       required String note,
       required List<SubNoteEntity> subNotes,
-      required bool isCompleted,
+      Value<bool> isCompleted,
       Value<DateTime?> createdAt,
     });
 typedef $$NoteTableTableUpdateCompanionBuilder =
@@ -609,7 +607,7 @@ class $$NoteTableTableTableManager
                 required String title,
                 required String note,
                 required List<SubNoteEntity> subNotes,
-                required bool isCompleted,
+                Value<bool> isCompleted = const Value.absent(),
                 Value<DateTime?> createdAt = const Value.absent(),
               }) => NoteTableCompanion.insert(
                 id: id,
